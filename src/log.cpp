@@ -30,10 +30,10 @@ void Log::Error(const char* message, bool endline)
 {
     if (m_LogLevel >= LevelError)
     {
-        if (m_newline) //For errors, always begin from new line!
+        if (!m_newline) //For errors, always begin from new line!
         {
             printf("\n");
-            m_newline = false;
+            m_newline = true;
         }
         m_error_cnt++;
         SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED);

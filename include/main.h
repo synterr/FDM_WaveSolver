@@ -3,36 +3,40 @@
 #include <SFML/Graphics.hpp>
 #include "log.h"
 
-#define W_WIDTH		800		// screen width
-#define W_HEIGHT	600		// screen height
-#define F_RATE		100		// framerate limit
+#define WIDTH		1800		// screen width
+#define HEIGHT		1600		// screen height
+#define FRAME_RATE	100		// frame rate limit
 
-#define EXIT() {Exit(); return 0;}
+#define EXIT() {exit(); return 0;}
 
-using namespace sf;
 using namespace std;
 
 //Global variables
 constexpr auto TWO_PI = 3.14159265358979f * 2;
 
-const Vector2u	window_size(W_WIDTH + 1, W_HEIGHT + 1);
+const sf::Vector2u	window_size(WIDTH + 1, HEIGHT + 1);
 
 char logr_buff[80] = "Loger buffer Init";
 
 Log logr(Log::LevelInfo);
 
-WindowHandle h_window;	// main window handle
-Image image_buf;		// main window image buffer
+sf::RenderWindow window;	// main window
+sf::WindowHandle h_window;	// main window handle
 
-Texture texture_wnd;	// window texture
-Sprite  sprite_wnd;		// window sprite
+sf::Image   image_wnd;		// window image
+sf::Texture texture_wnd;	// window texture
+sf::Sprite  sprite_wnd;		// window sprite
 
-Texture texture_wav;	// wave texture
-Sprite  sprite_wav;		// wave sprite
+sf::Image   image_wav;		// wave image
+sf::Texture texture_wav;	// wave texture
+sf::Sprite  sprite_wav;		// wave sprite
 
-Texture texture_med;	// media texture
-Sprite  sprite_med;		// media sprite
+sf::Image   image_med;		// media image
+sf::Texture texture_med;	// media texture
+sf::Sprite  sprite_med;		// media sprite
 
 //Functions
-static bool PrepareTextures();
-static void Exit();
+static bool prepareTextures();
+static bool createWindow();
+static void exit();
+static void mainLoop();

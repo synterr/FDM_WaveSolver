@@ -16,76 +16,74 @@ int main(int argc, char* argv[])
 	logr.Warn("Debug mode!");
 #endif
 	
-	logr.Info("Create window... ", false);
-
-	ContextSettings settings;
-	settings.antialiasingLevel = 4;
-
-	RenderWindow window(VideoMode(window_size.x, window_size.y), "FDM Wave Solver", Style::Close, settings);
-	h_window = window.getSystemHandle();
-
-	if (h_window == nullptr) {
-		logr.Error("Can't create window :(");
+	if (!createWindow())
 		EXIT();
-	}
 
-	window.clear(Color(0, 0, 0, 255));
-	window.display();
-	window.setFramerateLimit(F_RATE);
-	
-	logr.Info("done!");
-
-	if (!PrepareTextures())
+	if (!prepareTextures())
 		EXIT();
-	
-	texture_wnd.update(image_buf);
-	texture_wav.update(image_buf);
-	texture_med.update(image_buf);
-	
-	window.draw(sprite_wnd);
-	window.draw(sprite_wav);
-	window.draw(sprite_med);
+	// draw window background texture
+
+	//window.draw(sprite_wnd);
+
+	logr.Info("Simulation started!");
+	if(window.isOpen())
+		mainLoop();
+	logr.Info("Simulation stopped!");
+
 
 	window.display();
 
 	EXIT();
 }
 
-static bool PrepareTextures()
+void mainLoop()
+{
+	while (window.isOpen())
+	{
+		sf::Event event;
+		while (window.pollEvent(event))
+		{
+			switch (event.type)
+			{
+				case sf::Event::Closed:
+					window.close();
+					break;
+			}
+		}
+		
+		texture_wnd.update(image_wav);
+		texture_wav.update(image_wav);
+		texture_med.update(image_med);
+
+		window.draw(sprite_wnd);
+		window.draw(sprite_wav);
+		window.draw(sprite_med);
+
+		window.display();
+	}
+}
+
+static bool createWindow()
 {
 	bool result = true;
-	logr.Info("Preparing image buffer and textures...", false);
-	
-	// main window image buffer
-	image_buf.create(W_WIDTH + 1, W_HEIGHT + 1, Color(0, 0, 0));
+	logr.Info("Create window... ", false);
 
-	// window texture and sprite
-	if (result &= texture_wnd.create(W_WIDTH + 1, W_HEIGHT + 1))
-	{
-		texture_wnd.update(image_buf);
-		sprite_wnd.setTexture(texture_wnd);
+	sf::ContextSettings settings;
+	settings.antialiasingLevel = 4;
+
+	window.create(sf::VideoMode(window_size.x, window_size.y), "FDM Wave Solver", sf::Style::Close, settings);
+	h_window = window.getSystemHandle();
+
+	if (h_window == nullptr) {
+		logr.Error("Can't create window :(");
+		result = false;
 	}
 	else
-		logr.Error("Failed to prepare window texture");
-
-	// wave texture and sprite
-	if (result &= texture_wav.create(W_WIDTH + 1, W_HEIGHT + 1))
 	{
-		texture_wav.update(image_buf);
-		sprite_wav.setTexture(texture_wav);
+		window.clear(sf::Color(0, 0, 0, 255));
+		window.display();
+		window.setFramerateLimit(FRAME_RATE);
 	}
-	else
-		logr.Error("Failed to prepare wave texture");
-
-	// medium texture and sprite
-	if (result &= texture_med.create(W_WIDTH + 1, W_HEIGHT + 1))
-	{
-		texture_med.update(image_buf);
-		sprite_med.setTexture(texture_med);
-	}
-	else
-		logr.Error("Failed to prepare medium texture");
-
 
 	if (result)
 		logr.Info("done!");
@@ -93,7 +91,63 @@ static bool PrepareTextures()
 	return result;
 }
 
-static void Exit()
+static bool prepareTextures()
+{
+	bool result = true;
+	logr.Info("Preparing image buffer and textures...", false);
+	
+	// window image texture and sprite
+	image_wnd.create(WIDTH + 1, HEIGHT + 1, sf::Color(10, 10, 10, 255));
+
+	if (texture_wnd.create(WIDTH + 1, HEIGHT + 1))
+	{
+		texture_wnd.update(image_wnd);
+		sprite_wnd.setTexture(texture_wnd);
+	}
+	else
+	{
+		result &= 0; logr.Error("Failed to prepare window texture");
+	}
+
+	// wave image texture and sprite
+	image_wav.create(WIDTH + 1, HEIGHT + 1, sf::Color(10, 10, 10, 100));
+
+	if (texture_wav.create(WIDTH + 1, HEIGHT + 1))
+	{
+		texture_wav.update(image_wav);
+		sprite_wav.setTexture(texture_wav);
+	}
+	else
+	{
+		result &= 0; logr.Error("Failed to prepare wave texture");
+	}
+
+	// medium texture and sprite
+	image_med.create(WIDTH + 1, HEIGHT + 1, sf::Color(10, 10, 10, 100));
+
+	if (texture_med.create(WIDTH + 1, HEIGHT + 1))
+	{
+		texture_med.update(image_med);
+		sprite_med.setTexture(texture_med);
+	}
+	else
+	{
+		result &= 0; logr.Error("Failed to prepare medium texture");
+	}
+
+	if (result)
+	{
+		logr.Info("done!");
+		sprintf_s(logr_buff, "Total images size: %d MB", image_wav.getSize().x * image_wnd.getSize().y * 3 * 4 / 1000000);
+		logr.Info(logr_buff);
+		sprintf_s(logr_buff, "Total textures size: %d MB", texture_wnd.getSize().x * texture_med.getSize().y * 3 * 4 / 1000000);
+		logr.Info(logr_buff);
+	}
+
+	return result;
+}
+
+static void exit()
 {
 	logr.Warn("Exiting...", false);
 	
