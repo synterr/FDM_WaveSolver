@@ -132,6 +132,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(ProjectDir)\include;C:\SFML-2.6.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PrecompiledHeader>Create</PrecompiledHeader>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -161,6 +162,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\memory.cpp" />
+    <ClCompile Include="src\solver.cpp" />
     <ClCompile Include="src\graphics.cpp" />
     <ClCompile Include="src\fps.cpp" />
     <ClCompile Include="src\log.cpp" />
@@ -171,6 +174,9 @@
     <ClInclude Include="include\fps.h" />
     <ClInclude Include="include\log.h" />
     <ClInclude Include="include\main.h" />
+    <ClInclude Include="include\solver.h" />
+    <ClInclude Include="include\memory.h" />
+    <ClInclude Include="include\stdafx.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

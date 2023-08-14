@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "graphics.h"
 
 Graphics::Graphics() : m_window(nullptr), m_logr(nullptr)
@@ -58,7 +59,7 @@ bool Graphics::loadResources()
 	// wave image texture and sprite
 	m_image_wav.create(m_window_size.x, m_window_size.y, sf::Color(10, 10, 10, 250));
 
-	if (!m_texture_wav.create(m_window_size.x, m_window_size.y))
+	if (m_texture_wav.create(m_window_size.x, m_window_size.y))
 	{
 		m_texture_wav.update(m_image_wav);
 		m_sprite_wav.setTexture(m_texture_wav);
@@ -116,7 +117,7 @@ void Graphics::drawText(std::string text, sf::Vector2u pos)
 	sf::Text sftext;
 	sftext.setFont(m_font); 
 
-	sftext.setPosition(pos.x, pos.y);
+	sftext.setPosition((float)pos.x, (float)pos.y);
 	sftext.setString(text);
 	sftext.setCharacterSize(16); // in pixels, not points!
 	sftext.setFillColor(sf::Color(200, 200, 200, 120));

@@ -1,5 +1,5 @@
+#include "stdafx.h"
 #include "main.h"
-#include <windows.h>
 
 int main(int argc, char* argv[])
 {
@@ -13,6 +13,7 @@ int main(int argc, char* argv[])
 #else
 	logr.Warn("Debug mode!");
 #endif
+
 	graph = Graphics(&window, &logr);
 
 	if (!graph.createWindow("FDM Wave Solver", window_size, FRAME_RATE))
@@ -46,9 +47,9 @@ void mainLoop()
 			}
 		}
 
-		graph.updateTexture(graph.TextureWindow);
-		graph.updateTexture(graph.TextureWave);
-		graph.updateTexture(graph.TextureMedium);
+		graph.updateTexture(Graphics::TextureWindow);
+		graph.updateTexture(Graphics::TextureWave);
+		graph.updateTexture(Graphics::TextureMedium);
 
 		window.draw(graph.m_sprite_wnd);
 		window.draw(graph.m_sprite_wav);

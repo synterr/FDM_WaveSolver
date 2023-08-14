@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "fps.h"
 #include <sstream>
 

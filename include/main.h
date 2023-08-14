@@ -4,9 +4,12 @@
 #include <string>
 #include <vector>
 #include <SFML/Graphics.hpp>
+#include <windows.h>
 #include "log.h"
 #include "fps.h"
 #include "graphics.h"
+#include "memory.h"
+#include "solver.h"
 
 #define WIDTH		600		// screen width
 #define HEIGHT		600		// screen height
