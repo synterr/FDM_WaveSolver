@@ -22,6 +22,9 @@ int main(int argc, char* argv[])
 	if (!graph.loadResources())
 		EXIT();
 
+	if(!mem.Allocate(window_size))
+		EXIT();
+
 	logr.Info("Simulation started!");
 	if (window.isOpen())
 		mainLoop();

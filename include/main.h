@@ -11,7 +11,7 @@
 #include "memory.h"
 #include "solver.h"
 
-#define WIDTH		600		// screen width
+#define WIDTH		800		// screen width
 #define HEIGHT		600		// screen height
 #define FRAME_RATE	100		// frame rate limit
 
@@ -26,6 +26,7 @@ constexpr auto TWO_PI = 3.14159265358979f * 2;
 const sf::Vector2u	window_size(WIDTH + 1, HEIGHT + 1);
 
 Graphics graph;
+Memory   mem;
 Fps fps;
 Log logr(Log::LevelInfo);
 
