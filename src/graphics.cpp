@@ -14,8 +14,7 @@ Graphics::Graphics(sf::RenderWindow* window, sf::Font* font)
 void Graphics::drawText(std::string text, sf::Vector2u pos)
 {
 	sf::Text sftext;
-	sftext.setFont(*m_font); // font is a sf::Font
-	// set the string to display
+	sftext.setFont(*m_font); 
 
 	sftext.setPosition(pos.x, pos.y);
 	sftext.setString(text);

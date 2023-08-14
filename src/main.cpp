@@ -14,7 +14,7 @@ int main(int argc, char* argv[])
 #else
 	logr.Warn("Debug mode!");
 #endif
-	
+
 	if (!createWindow())
 		EXIT();
 
@@ -24,7 +24,7 @@ int main(int argc, char* argv[])
 	graph = Graphics(&window, &font);
 
 	logr.Info("Simulation started!");
-	if(window.isOpen())
+	if (window.isOpen())
 		mainLoop();
 	logr.Info("Simulation stopped!");
 
@@ -42,12 +42,12 @@ void mainLoop()
 		{
 			switch (event.type)
 			{
-				case sf::Event::Closed:
-					window.close();
-					break;
+			case sf::Event::Closed:
+				window.close();
+				break;
 			}
 		}
-		
+
 		texture_wnd.update(image_wnd);
 		texture_wav.update(image_wav);
 		texture_med.update(image_med);
@@ -94,7 +94,7 @@ static bool loadResources()
 {
 	bool result = true;
 	logr.Info("Preparing image buffer and textures...");
-	
+
 	// window image texture and sprite
 	image_wnd.create(WIDTH + 1, HEIGHT + 1, sf::Color(10, 10, 10, 255));
 
@@ -141,12 +141,12 @@ static bool loadResources()
 
 	if (result)
 	{
-		logr_stream << "Total images size: " << image_wav.getSize().x * image_wnd.getSize().y * 3 * 4 / 1000000 << "MB";
-		logr.Info(logr_stream.str().c_str()); logr_stream = std::stringstream();
-		logr_stream << "Total textures size: " << texture_wnd.getSize().x * texture_med.getSize().y * 3 * 4 / 1000000 << "MB";
-		logr.Info(logr_stream.str().c_str()); logr_stream = std::stringstream();
-		logr_stream << "Font: '" << font.getInfo().family << "' loaded.";
-		logr.Info(logr_stream.str().c_str()); logr_stream = std::stringstream();
+		logr.m_stream << "Total images size: " << image_wav.getSize().x * image_wnd.getSize().y * 3 * 4 / 1000000 << "MB";
+		logr.Info(logr.m_stream.str().c_str());
+		logr.m_stream << "Total textures size: " << texture_wnd.getSize().x * texture_med.getSize().y * 3 * 4 / 1000000 << "MB";
+		logr.Info(logr.m_stream.str().c_str());
+		logr.m_stream << "Font: '" << font.getInfo().family << "' loaded.";
+		logr.Info(logr.m_stream.str().c_str());
 	}
 
 	return result;
@@ -155,6 +155,6 @@ static bool loadResources()
 static void exit()
 {
 	logr.Warn("Exiting...");
-	
+
 	Sleep(1000);
 }

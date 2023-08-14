@@ -22,8 +22,6 @@ constexpr auto TWO_PI = 3.14159265358979f * 2;
 
 const sf::Vector2u	window_size(WIDTH + 1, HEIGHT + 1);
 
-std::stringstream logr_stream;
-
 Graphics graph;
 Log logr(Log::LevelInfo);
 Fps fps;
