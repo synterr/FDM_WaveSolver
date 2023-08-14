@@ -26,65 +26,41 @@ Log::~Log()
     }
 }
 
-void Log::Error(const char* message, bool endline)
+void Log::Error(const char* message)
 {
     if (m_LogLevel >= LevelError)
     {
-        if (!m_newline) //For errors, always begin from new line!
-        {
-            printf("\n");
-            m_newline = true;
-        }
         m_error_cnt++;
         SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED);
         printf("[ERROR]:");
         SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0x0F);
         printf(message);
+        printf("\n");
 
-        if (endline)
-        {
-            printf("\n");
-            m_newline = true;
-        }
-        else
-            m_newline = false;
     }
 }
 
-void Log::Warn(const char* message, bool endline)
+void Log::Warn(const char* message)
 {
-    m_warn_cnt++;
-    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_GREEN | FOREGROUND_RED);
-    if (m_newline)
+    if (m_LogLevel >= LevelWarning)
+    {
+        m_warn_cnt++;
+        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_GREEN | FOREGROUND_RED);
         printf("[WARNING]:");
-    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0x0F);
-    printf(message);
-
-    if (endline)
-    {
+        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0x0F);
+        printf(message);
         printf("\n");
-        m_newline = true;
     }
-    else
-        m_newline = false;
-    
 }
 
-void Log::Info(const char* message, bool endline)
+void Log::Info(const char* message)
 {
-    m_info_cnt++;
-    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0x0F);
-    if (m_newline)
-        printf("[INFO]:");
-
-    printf(message);
-
-    if (endline)
+    if (m_LogLevel >= LevelInfo)
     {
+        m_info_cnt++;
+        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 0x0F);
+        printf("[INFO]:");
+        printf(message);
         printf("\n");
-        m_newline = true;
     }
-    else
-        m_newline = false;
-    
 }

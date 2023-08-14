@@ -1,13 +1,12 @@
 #include "main.h"
 #include <windows.h>
-#include <vector>
-#include <sstream>
 
 
 int main(int argc, char* argv[])
 {
 	bool result = true;
 
+	logr.SetLevel(Log::LevelInfo);
 	logr.Info("WaveSolver by SyntErr 2023");
 
 #ifdef NDEBUG
@@ -19,17 +18,15 @@ int main(int argc, char* argv[])
 	if (!createWindow())
 		EXIT();
 
-	if (!prepareTextures())
+	if (!loadResources())
 		EXIT();
-	// draw window background texture
 
-	//window.draw(sprite_wnd);
+	graph = Graphics(&window, &font);
 
 	logr.Info("Simulation started!");
 	if(window.isOpen())
 		mainLoop();
 	logr.Info("Simulation stopped!");
-
 
 	window.display();
 
@@ -51,13 +48,18 @@ void mainLoop()
 			}
 		}
 		
-		texture_wnd.update(image_wav);
+		texture_wnd.update(image_wnd);
 		texture_wav.update(image_wav);
 		texture_med.update(image_med);
 
 		window.draw(sprite_wnd);
 		window.draw(sprite_wav);
 		window.draw(sprite_med);
+
+		fps.update();
+		std::stringstream fpss;
+		fpss << "FPS:" << fps.getFPS();
+		graph.drawText(fpss.str(), Vector2u(10, 10));
 
 		window.display();
 	}
@@ -66,7 +68,7 @@ void mainLoop()
 static bool createWindow()
 {
 	bool result = true;
-	logr.Info("Create window... ", false);
+	logr.Info("Create window...");
 
 	sf::ContextSettings settings;
 	settings.antialiasingLevel = 4;
@@ -85,16 +87,13 @@ static bool createWindow()
 		window.setFramerateLimit(FRAME_RATE);
 	}
 
-	if (result)
-		logr.Info("done!");
-
 	return result;
 }
 
-static bool prepareTextures()
+static bool loadResources()
 {
 	bool result = true;
-	logr.Info("Preparing image buffer and textures...", false);
+	logr.Info("Preparing image buffer and textures...");
 	
 	// window image texture and sprite
 	image_wnd.create(WIDTH + 1, HEIGHT + 1, sf::Color(10, 10, 10, 255));
@@ -135,13 +134,19 @@ static bool prepareTextures()
 		result &= 0; logr.Error("Failed to prepare medium texture");
 	}
 
+	if (!font.loadFromFile("segoeui.ttf"))
+	{
+		result &= 0; logr.Error("Fonts not found");
+	}
+
 	if (result)
 	{
-		logr.Info("done!");
-		sprintf_s(logr_buff, "Total images size: %d MB", image_wav.getSize().x * image_wnd.getSize().y * 3 * 4 / 1000000);
-		logr.Info(logr_buff);
-		sprintf_s(logr_buff, "Total textures size: %d MB", texture_wnd.getSize().x * texture_med.getSize().y * 3 * 4 / 1000000);
-		logr.Info(logr_buff);
+		logr_stream << "Total images size: " << image_wav.getSize().x * image_wnd.getSize().y * 3 * 4 / 1000000 << "MB";
+		logr.Info(logr_stream.str().c_str()); logr_stream = std::stringstream();
+		logr_stream << "Total textures size: " << texture_wnd.getSize().x * texture_med.getSize().y * 3 * 4 / 1000000 << "MB";
+		logr.Info(logr_stream.str().c_str()); logr_stream = std::stringstream();
+		logr_stream << "Font: '" << font.getInfo().family << "' loaded.";
+		logr.Info(logr_stream.str().c_str()); logr_stream = std::stringstream();
 	}
 
 	return result;
@@ -149,7 +154,7 @@ static bool prepareTextures()
 
 static void exit()
 {
-	logr.Warn("Exiting...", false);
+	logr.Warn("Exiting...");
 	
 	Sleep(1000);
 }

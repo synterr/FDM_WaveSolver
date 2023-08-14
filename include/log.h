@@ -5,7 +5,7 @@ class Log
 public:
     enum Level
     {
-        LevelError = 0, LevelWarning, LevelInfo
+        LevelNone = 0, LevelError, LevelWarning, LevelInfo
     };
 
 private:
@@ -21,9 +21,9 @@ public:
     Log(Level level);
     void SetLevel(Level level);
 
-    void Error(const char* message, bool endline = true);
-    void Warn(const char* message, bool endline = true);
-    void Info(const char* message, bool endline = true);
+    void Error(const char* message);
+    void Warn(const char* message);
+    void Info(const char* message);
 
     ~Log();
 };

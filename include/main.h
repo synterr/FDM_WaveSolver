@@ -1,24 +1,32 @@
 #pragma once
 #include <iostream>
+#include <sstream>
+#include <string>
+#include <vector>
 #include <SFML/Graphics.hpp>
 #include "log.h"
+#include "fps.h"
+#include "graphics.h"
 
-#define WIDTH		1800		// screen width
-#define HEIGHT		1600		// screen height
+#define WIDTH		800		// screen width
+#define HEIGHT		600		// screen height
 #define FRAME_RATE	100		// frame rate limit
 
 #define EXIT() {exit(); return 0;}
 
 using namespace std;
+using namespace sf;
 
 //Global variables
 constexpr auto TWO_PI = 3.14159265358979f * 2;
 
 const sf::Vector2u	window_size(WIDTH + 1, HEIGHT + 1);
 
-char logr_buff[80] = "Loger buffer Init";
+std::stringstream logr_stream;
 
+Graphics graph;
 Log logr(Log::LevelInfo);
+Fps fps;
 
 sf::RenderWindow window;	// main window
 sf::WindowHandle h_window;	// main window handle
@@ -35,8 +43,11 @@ sf::Image   image_med;		// media image
 sf::Texture texture_med;	// media texture
 sf::Sprite  sprite_med;		// media sprite
 
+sf::Font font;				// font used
+
+
 //Functions
-static bool prepareTextures();
+static bool loadResources();
 static bool createWindow();
 static void exit();
 static void mainLoop();

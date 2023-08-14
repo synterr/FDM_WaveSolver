@@ -161,10 +161,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\graphics.cpp" />
+    <ClCompile Include="src\fps.cpp" />
     <ClCompile Include="src\log.cpp" />
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\graphics.h" />
+    <ClInclude Include="include\fps.h" />
     <ClInclude Include="include\log.h" />
     <ClInclude Include="include\main.h" />
   </ItemGroup>
