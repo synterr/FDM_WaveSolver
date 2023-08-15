@@ -89,9 +89,9 @@ bool Graphics::loadResources()
 
 	if (result)
 	{
-		m_logr->m_stream << "Total images size: " << m_image_wav.getSize().x * m_image_wnd.getSize().y * 3 * 4 / 1000000 << "MB";
+		m_logr->m_stream << "Total images size: " << m_image_wav.getSize().x * m_image_wnd.getSize().y * 3 * 4 / 1000000 << " MB";
 		m_logr->Info(m_logr->m_stream.str().c_str());
-		m_logr->m_stream << "Total textures size: " << m_texture_wnd.getSize().x * m_texture_med.getSize().y * 3 * 4 / 1000000 << "MB";
+		m_logr->m_stream << "Total textures size: " << m_texture_wnd.getSize().x * m_texture_med.getSize().y * 3 * 4 / 1000000 << " MB";
 		m_logr->Info(m_logr->m_stream.str().c_str());
 		m_logr->m_stream << "Font: '" << m_font.getInfo().family << "' loaded.";
 		m_logr->Info(m_logr->m_stream.str().c_str());

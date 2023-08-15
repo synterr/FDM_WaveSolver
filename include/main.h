@@ -27,6 +27,7 @@ const sf::Vector2u	window_size(WIDTH + 1, HEIGHT + 1);
 
 Graphics graph;
 Memory*  mem;
+Solver solver;
 Fps fps;
 Log logr(Log::LevelInfo);
 

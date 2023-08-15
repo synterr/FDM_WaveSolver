@@ -14,7 +14,7 @@ Memory* Memory::getInstance(Log* logr)
 		m_instanceMemory;
 }
 void Memory::destroyInstance() {
-	m_logr->Info("Destroying memory instance... ");
+	m_logr->Info("Freeing memory instance... ");
 	delete m_instanceMemory;
 	m_instanceMemory = nullptr;
 }
@@ -53,6 +53,9 @@ bool Memory::Allocate(sf::Vector2u size)
 		u_nm[i] = vector<double>(m_size.y);
 		q[i] = vector<double>(m_size.y);
 	}
+
+	m_logr->m_stream << "Total allocated vector size: " << u[0].size() * u.size() * sizeof(double)*4/1000000 << " MB";
+	m_logr->Info(m_logr->m_stream.str().c_str());
 
 	return true;
 }

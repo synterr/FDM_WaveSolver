@@ -7,31 +7,38 @@ int main(int argc, char* argv[])
 
 	logr.SetLevel(Log::LevelInfo);
 	logr.Info("WaveSolver by SyntErr 2023");
-
+	printf("\n");
 #ifdef NDEBUG
 	logr.Warn("Release mode!");
 #else
 	logr.Warn("Debug mode!");
 #endif
+	printf("\n");
+
 	//Prepare memory
 	mem = mem->getInstance(&logr);
 	if (!mem->Allocate(window_size))
 		EXIT();
-	
+	printf("\n");
+
 	//Prepare graphics
 	graph = Graphics(&window, &logr);
 	if (!graph.createWindow("FDM Wave Solver", window_size, FRAME_RATE))
 		EXIT();
 	if (!graph.loadResources())
 		EXIT();
+	printf("\n");
 
+	//Initialize solver
+	solver.Init(window_size.x-1, window_size.y-1, 0.03, 0.08, mem);
 	logr.Info("Simulation started!");
+	printf("\n");
+
 	if (window.isOpen())
 		mainLoop();
+
 	logr.Info("Simulation stopped!");
-
-	window.display();
-
+	printf("\n");
 	EXIT();
 }
 

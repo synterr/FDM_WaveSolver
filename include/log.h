@@ -2,7 +2,9 @@
 #include <iostream>
 #include <windows.h>
 #include <sstream>
+#include <chrono>
 
+using namespace std::chrono;
 
 class Log
 {

@@ -1,18 +1,24 @@
 #pragma once
+#include "memory.h"
+
 class Solver
 {
 public:
 	double m_dt;					// delta time step
 	double m_dx;					// 1 pixel / WIDTH
 	double m_dy;					// 1 pixel / HEIGHT
-
-	int m_Nx;						// Width for arrays
-	int m_Ny;						// Height for arrays
+	
+	double mC;				//Courant number
+	double mC2;				//Courant number^2
+	
+	int m_Nx;						// Width of simulation area
+	int m_Ny;						// Height of simulation area
 
 	double m_xMid;				// midpoint in normalized coords
 	double m_yMid;				// midpoint in normalized coords
 
 public:
 		Solver();
+		bool Init(int width, int height, double dt, double cv, Memory* mem);
 };
 
