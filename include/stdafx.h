@@ -10,3 +10,5 @@
 #include "graphics.h"
 #include "memory.h"
 #include "solver.h"
+#include "state_modifier.h"
+#include "colors.h"

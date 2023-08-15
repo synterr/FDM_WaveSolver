@@ -163,6 +163,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\colors.cpp" />
     <ClCompile Include="src\memory.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Use</PrecompiledHeader>
     </ClCompile>
@@ -185,8 +186,10 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="src\state_modifier.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\colors.h" />
     <ClInclude Include="include\graphics.h" />
     <ClInclude Include="include\fps.h" />
     <ClInclude Include="include\log.h" />
@@ -194,6 +197,7 @@
     <ClInclude Include="include\solver.h" />
     <ClInclude Include="include\memory.h" />
     <ClInclude Include="include\stdafx.h" />
+    <ClInclude Include="include\state_modifier.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

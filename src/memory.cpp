@@ -31,7 +31,7 @@ Memory::~Memory()
 		q[i].clear();
 	}
 }
-bool Memory::Allocate(sf::Vector2u size)
+bool Memory::allocate(sf::Vector2u size)
 {
 	m_logr->Info("Allocating vectors... ");
 	m_size.x = size.x + 1;

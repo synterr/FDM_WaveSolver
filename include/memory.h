@@ -19,6 +19,7 @@ private:
 
 public:
 	sf::Vector2u m_size;
+
 	// declare wave arrays
 	vector<vector<double>> u;
 	vector<vector<double>> u_n;
@@ -29,7 +30,7 @@ public:
 	vector<double> x;		// x steps array
 	vector<double> y;	    // y steps array
 public:
-	bool Allocate(sf::Vector2u size);
+	bool allocate(sf::Vector2u size);
 
 };
 

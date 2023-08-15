@@ -10,10 +10,12 @@
 #include "graphics.h"
 #include "memory.h"
 #include "solver.h"
+#include "state_modifier.h"
+#include "colors.h"
 
-#define WIDTH		800		// screen width
+#define WIDTH		900		// screen width
 #define HEIGHT		600		// screen height
-#define FRAME_RATE	100		// frame rate limit
+#define FRAME_RATE	200		// frame rate limit
 
 #define EXIT() {exit(); return 0;}
 
@@ -28,6 +30,7 @@ const sf::Vector2u	window_size(WIDTH + 1, HEIGHT + 1);
 Graphics graph;
 Memory*  mem;
 Solver solver;
+StateModifier smod;
 Fps fps;
 Log logr(Log::LevelInfo);
 

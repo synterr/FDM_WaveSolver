@@ -17,7 +17,7 @@ int main(int argc, char* argv[])
 
 	//Prepare memory
 	mem = mem->getInstance(&logr);
-	if (!mem->Allocate(window_size))
+	if (!mem->allocate(window_size))
 		EXIT();
 	printf("\n");
 
@@ -30,7 +30,13 @@ int main(int argc, char* argv[])
 	printf("\n");
 
 	//Initialize solver
-	solver.Init(window_size.x-1, window_size.y-1, 0.03, 0.08, mem);
+	solver.init(window_size.x-1, window_size.y-1, 0.01, 0.08, mem);
+	//Set initial conditions
+	smod = StateModifier(solver.m_dt, solver.m_dx, solver.m_dy, solver.m_Nx, solver.m_Ny);
+	solver.initialConditions(mem, &smod);
+	//Compute color tables
+	ComputeColorTables();
+
 	logr.Info("Simulation started!");
 	printf("\n");
 
@@ -56,14 +62,24 @@ void mainLoop()
 				break;
 			}
 		}
+		solver.simStep(mem, &smod);
+		
+		double scale = 1;
+		for (int i = 1; i < solver.m_Nx; i++)
+		{
+			for (int j = 1; j < solver.m_Ny; j++)
+			{
+				graph.m_image_wnd.setPixel(i, j, color_scheme(mem->u[i][j], scale));
+			}
+		}
 
 		graph.updateTexture(Graphics::TextureWindow);
-		graph.updateTexture(Graphics::TextureWave);
-		graph.updateTexture(Graphics::TextureMedium);
+		//graph.updateTexture(Graphics::TextureWave);
+		//graph.updateTexture(Graphics::TextureMedium);
 
 		window.draw(graph.m_sprite_wnd);
-		window.draw(graph.m_sprite_wav);
-		window.draw(graph.m_sprite_med);
+		//window.draw(graph.m_sprite_wav);
+		//window.draw(graph.m_sprite_med);
 
 		fps.update();
 		std::stringstream fpss;
