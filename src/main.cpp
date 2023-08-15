@@ -13,16 +13,16 @@ int main(int argc, char* argv[])
 #else
 	logr.Warn("Debug mode!");
 #endif
-
+	//Prepare memory
+	mem = mem->getInstance(&logr);
+	if (!mem->Allocate(window_size))
+		EXIT();
+	
+	//Prepare graphics
 	graph = Graphics(&window, &logr);
-
 	if (!graph.createWindow("FDM Wave Solver", window_size, FRAME_RATE))
 		EXIT();
-
 	if (!graph.loadResources())
-		EXIT();
-
-	if(!mem.Allocate(window_size))
 		EXIT();
 
 	logr.Info("Simulation started!");
@@ -65,6 +65,7 @@ void mainLoop()
 
 		window.display();
 	}
+	mem->destroyInstance();
 }
 
 

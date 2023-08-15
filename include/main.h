@@ -26,7 +26,7 @@ constexpr auto TWO_PI = 3.14159265358979f * 2;
 const sf::Vector2u	window_size(WIDTH + 1, HEIGHT + 1);
 
 Graphics graph;
-Memory   mem;
+Memory*  mem;
 Fps fps;
 Log logr(Log::LevelInfo);
 
