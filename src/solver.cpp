@@ -14,7 +14,7 @@ Solver::Solver()
 
 }
 
-void Solver::simStep(Memory* mem, StateModifier* sm, int i, int j)
+void Solver::simStep(Memory* mem, Graphics* graph,StateModifier* sm, double scale)
 {
 
 	vector<vector<double>>& u = mem->u;
@@ -25,40 +25,32 @@ void Solver::simStep(Memory* mem, StateModifier* sm, int i, int j)
 	vector<double>& x = mem->x;
 	vector<double>& y = mem->y;
 
-
-
-	iplus = (i + 1);
-	iminus = (i - 1);
-	jplus = (j + 1);
-	jminus = (j - 1);
-
-	if (q[iplus][j] + q[iminus][j] + q[i][jplus] + q[i][jminus] + q[i][j] > 0.0)
-		//if (q[i][j] >  0.0)
+	for (int i = 1; i < m_Nx; i++)
 	{
-		///*Periodic conditions*/
-		//iplus = (i + 1) % Nx;
-		//iminus = (i - 1) % Nx;
-		//if (iminus < 0)
-		//	iminus += Nx;
+		iplus = (i + 1);
+		iminus = (i - 1);
 
-		//jplus = (j + 1) % Ny;
-		//jminus = (j - 1) % Ny;
-		//if (jminus < 0)
-		//	jminus += Ny;
+		for (int j = 1; j < m_Ny; j++)
+		{
+			jplus = (j + 1);
+			jminus = (j - 1);
 
-		/*Reflective but inverting conditions*/
-		
+			if (q[iplus][j] + q[iminus][j] + q[i][jplus] + q[i][jminus] + q[i][j] > 0.0)
+				//if (q[i][j] >  0.0)
+			{
 
-		delta = //u_n[iplus][j] + u_n[iminus][j] + u_n[i][jplus] + u_n[i][jminus] - 4.0 * u_n[i][j];
-				 (0.5 * (q[i][j] + q[iplus][j])  * (u_n[iplus][j]  - u_n[i][j])
-				+ 0.5 * (q[i][j] + q[iminus][j]) * (u_n[iminus][j] - u_n[i][j])
-				+ 0.5 * (q[i][j] + q[i][jplus])  * (u_n[i][jplus]  - u_n[i][j])
-				+ 0.5 * (q[i][j] + q[i][jminus]) * (u_n[i][jminus] - u_n[i][j]));
+				delta = //u_n[iplus][j] + u_n[iminus][j] + u_n[i][jplus] + u_n[i][jminus] - 4.0 * u_n[i][j];
+					(0.5 * (q[i][j] + q[iplus][j]) * (u_n[iplus][j] - u_n[i][j])
+						+ 0.5 * (q[i][j] + q[iminus][j]) * (u_n[iminus][j] - u_n[i][j])
+						+ 0.5 * (q[i][j] + q[i][jplus]) * (u_n[i][jplus] - u_n[i][j])
+						+ 0.5 * (q[i][j] + q[i][jminus]) * (u_n[i][jminus] - u_n[i][j]));
 
-		u[i][j] = -u_nm[i][j] + 2 * u_n[i][j] + mC2 * delta + sm->DriveForce(x[i], y[j], m_tim)
-				  -u_n[i][j] * elasticity				 //"elasticity" term enforcing oscillations
-		          -(u_n[i][j] - u_nm[i][j]) * damping;			 //damping
-
+				u[i][j] = -u_nm[i][j] + 2 * u_n[i][j] + mC2 * delta + sm->DriveForce(x[i], y[j], m_tim)
+					- u_n[i][j] * elasticity				 //"elasticity" term enforcing oscillations
+					- (u_n[i][j] - u_nm[i][j]) * damping;			 //damping
+			}
+			graph->m_image_wnd.setPixel(i, j, color_scheme(mem->u[i][j], scale));
+		}
 	}
 }
 

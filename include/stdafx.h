@@ -5,6 +5,7 @@
 #include <vector>
 #include <SFML/Graphics.hpp>
 #include <windows.h>
+
 #include "log.h"
 #include "fps.h"
 #include "graphics.h"
