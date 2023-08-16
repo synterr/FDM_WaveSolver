@@ -30,8 +30,7 @@ const sf::Vector2u	window_size(WIDTH + 1, HEIGHT + 1);
 
 Graphics graph;
 Memory*  mem;
-Solver solver;
-StateModifier smod;
+
 Fps fps;
 Log logr(Log::LevelInfo);
 

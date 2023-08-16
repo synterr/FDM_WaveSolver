@@ -190,6 +190,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\colors.h" />
+    <ClInclude Include="include\globals.h" />
+    <ClInclude Include="src\globals.cpp" />
     <ClInclude Include="include\graphics.h" />
     <ClInclude Include="include\fps.h" />
     <ClInclude Include="include\log.h" />

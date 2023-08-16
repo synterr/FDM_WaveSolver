@@ -16,7 +16,7 @@ void ComputeColorTables()
         tanh_table[i] = tanh((double)(i-100000) / 1000.0);
 }
 
-void FreeColorTables()
+static void FreeColorTables()
 {
     y = 0.5;
     varhue_table.clear();

@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "main.h"
+#include "globals.h"
 
 double scale = 1;
 
@@ -33,10 +34,9 @@ int main(int argc, char* argv[])
 	printf("\n");
 
 	//Initialize solver
-	solver.init(window_size.x-1, window_size.y-1, 0.01, 0.08, mem);
+	Solver::init(window_size.x-1, window_size.y-1, 0.01, 0.08, mem);
 	//Set initial conditions
-	smod = StateModifier(solver.m_dt, solver.m_dx, solver.m_dy, solver.m_Nx, solver.m_Ny);
-	solver.initialConditions(mem, &smod);
+	Solver::initialConditions(mem);
 	//Compute color tables
 	ComputeColorTables();
 
@@ -66,18 +66,8 @@ void mainLoop()
 			}
 		}
 		scale = 1;
-		solver.simStep(mem, &graph, &smod, scale);
-		//for (int i = 1; i < solver.m_Nx; i++)
-		//{
-		//	for (int j = 1; j < solver.m_Ny; j++)
-		//	{
-		//		//solver.simStep(mem, &smod, i, j);
-		//		//graph.m_image_wnd.setPixel(i, j, color_scheme(mem->u[i][j], scale));
-		//	}
-		//}
+		Solver::simStep(mem, &graph, scale);
 
-
-		solver.update(mem);
 
 		graph.updateTexture(Graphics::TextureWindow);
 		//graph.updateTexture(Graphics::TextureWave);

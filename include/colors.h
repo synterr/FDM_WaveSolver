@@ -24,10 +24,10 @@ static sf::Color rgb;
 
 static vector<sf::Color>  varhue_table(36000);
 static vector<sf::Color>  varlume_table(10000);
-static vector<double> tanh_table(200000);
+static vector<double>     tanh_table(200000);
 
 void ComputeColorTables();
 static float HueToRGB(double v1, double v2, double vH);
 static sf::Color HSLToRGB(double h, double s, double l);
 sf::Color color_scheme(double& value, double& scale);
-void FreeColorTables();
+static void FreeColorTables();
