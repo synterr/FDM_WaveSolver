@@ -13,11 +13,12 @@ public:
 
 	double m_xMid;			// midpoint in normalized coords
 	double m_yMid;			// midpoint in normalized coords
+
 public:
 	StateModifier();
 	StateModifier(double dt, double dx, double dy, int Nx, int Ny);
 	double MediumCoeff(double& xi, double& yi);
 	double InitialState(double& xi, double& yi);
-	double DriveForce(double& xi, double& yi, double t);
+	double DriveForce(double& xi, double& yi, double& t);
 };
 

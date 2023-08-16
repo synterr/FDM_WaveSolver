@@ -17,6 +17,15 @@
 #define HUEMEAN 240.0    /* mean value of hue for color scheme C_HUE */
 #define HUEAMP 200.0      /* amplitude of variation of hue for color scheme C_HUE */
 
+
+static double hue, y, r, amplitude;
+static int intpart;
+static sf::Color rgb;
+
+static vector<sf::Color>  varhue_table(36000);
+static vector<sf::Color>  varlume_table(10000);
+static vector<double> tanh_table(200000);
+
 void ComputeColorTables();
 static float HueToRGB(double v1, double v2, double vH);
 static sf::Color HSLToRGB(double h, double s, double l);

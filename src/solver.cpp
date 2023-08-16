@@ -3,69 +3,73 @@
 
 double Solver::m_tim = 0;
 
+double delta = 0;
+int iplus, iminus, jplus, jminus;
+
+double elasticity = 0;
+double damping = 0;
+
 Solver::Solver()
 {
 
 }
 
-void Solver::simStep(Memory* mem, StateModifier* sm)
+void Solver::simStep(Memory* mem, StateModifier* sm, int i, int j)
 {
 
 	vector<vector<double>>& u = mem->u;
 	vector<vector<double>>& u_n = mem->u_n;
 	vector<vector<double>>& u_nm = mem->u_nm;
 	vector<vector<double>>& q = mem->q;
-	
+
 	vector<double>& x = mem->x;
 	vector<double>& y = mem->y;
-	
-	double delta = 0;
-	int iplus, iminus, jplus, jminus;
-	for (int i = 1; i < m_Nx; i++)
+
+
+
+	iplus = (i + 1);
+	iminus = (i - 1);
+	jplus = (j + 1);
+	jminus = (j - 1);
+
+	if (q[iplus][j] + q[iminus][j] + q[i][jplus] + q[i][jminus] + q[i][j] > 0.0)
+		//if (q[i][j] >  0.0)
 	{
-		iplus = (i + 1);
-		iminus = (i - 1);
-		for (int j = 1; j < m_Ny; j++)
-		{
-			if (q[i + 1][j] + q[i - 1][j] + q[i][j + 1] + q[i][j - 1] + q[i][j] > 0.0)
-				//if (q[i][j] >  0.0)
-			{
-				///*Periodic conditions*/
-				//iplus = (i + 1) % Nx;
-				//iminus = (i - 1) % Nx;
-				//if (iminus < 0)
-				//	iminus += Nx;
+		///*Periodic conditions*/
+		//iplus = (i + 1) % Nx;
+		//iminus = (i - 1) % Nx;
+		//if (iminus < 0)
+		//	iminus += Nx;
 
-				//jplus = (j + 1) % Ny;
-				//jminus = (j - 1) % Ny;
-				//if (jminus < 0)
-				//	jminus += Ny;
+		//jplus = (j + 1) % Ny;
+		//jminus = (j - 1) % Ny;
+		//if (jminus < 0)
+		//	jminus += Ny;
 
-				/*Reflective but inverting conditions*/
+		/*Reflective but inverting conditions*/
+		
 
-				jplus = (j + 1);
-				jminus = (j - 1);
+		delta = //u_n[iplus][j] + u_n[iminus][j] + u_n[i][jplus] + u_n[i][jminus] - 4.0 * u_n[i][j];
+				 (0.5 * (q[i][j] + q[iplus][j])  * (u_n[iplus][j]  - u_n[i][j])
+				+ 0.5 * (q[i][j] + q[iminus][j]) * (u_n[iminus][j] - u_n[i][j])
+				+ 0.5 * (q[i][j] + q[i][jplus])  * (u_n[i][jplus]  - u_n[i][j])
+				+ 0.5 * (q[i][j] + q[i][jminus]) * (u_n[i][jminus] - u_n[i][j]));
 
-				delta = //u_n[iplus][j] + u_n[iminus][j] + u_n[i][jplus] + u_n[i][jminus] - 4.0 * u_n[i][j];
-					(0.5 * (q[i][j] + q[iplus][j]) * (u_n[iplus][j] - u_n[i][j])
-						+ 0.5 * (q[i][j] + q[iminus][j]) * (u_n[iminus][j] - u_n[i][j])
-						+ 0.5 * (q[i][j] + q[i][jplus]) * (u_n[i][jplus] - u_n[i][j])
-						+ 0.5 * (q[i][j] + q[i][jminus]) * (u_n[i][jminus] - u_n[i][j]));
+		u[i][j] = -u_nm[i][j] + 2 * u_n[i][j] + mC2 * delta + sm->DriveForce(x[i], y[j], m_tim)
+				  -u_n[i][j] * elasticity				 //"elasticity" term enforcing oscillations
+		          -(u_n[i][j] - u_nm[i][j]) * damping;			 //damping
 
-				u[i][j] = -u_nm[i][j] + 2 * u_n[i][j] + mC2 * delta + m_dt * sm->DriveForce(x[i], y[j], m_tim);
-				u[i][j] -= 0.0005 * u_n[i][j] * m_dt;				 //"elasticity" term enforcing oscillations
-				u[i][j] -= 0.01 * (u_n[i][j] - u_nm[i][j]) * m_dt; //damping
-
-				//img.setPixel(i, j, color_scheme(u[i][j], scale));
-			}
-
-		}
 	}
-	//copy arrays before next step
-	u_nm = u_n;
-	u_n = u;
-	
+}
+
+void Solver::update(Memory* mem)
+{
 	m_tim += m_dt;
+	
+	//copy arrays before next step
+	mem->u_nm = mem->u_n;
+	mem->u_n = mem->u;
+
 }
 
 bool Solver::init(int width, int height, double dt, double cv, Memory* mem)
@@ -111,6 +115,9 @@ bool Solver::init(int width, int height, double dt, double cv, Memory* mem)
 
 	if (mC >= 1)
 		mem->m_logr->Warn("Courant constatnt C > 1 may cause simulation instability!");
+	
+	elasticity = 0.0005 * m_dt;
+	damping = 0.01 * m_dt;
 
 	return true;
 }

@@ -1,23 +1,7 @@
 #include "stdafx.h"
 #include "colors.h"
 
-//extern double dt;					// delta time step
-//extern double dx;					// 1 pixel / WIDTH
-//extern double dy;					// 1 pixel / HEIGHT
-//
-//extern int Nx;						// Width for arrays
-//extern int Ny;						// Height for arrays
-//
-//extern double x_mid;				// midpoint in normalized coords
-//extern double y_mid;				// midpoint in normalized coords
 
-static double hue, y, r, amplitude;
-static int intpart;
-sf::Color rgb;
-
-vector<sf::Color>  varhue_table(36000);
-vector<sf::Color>  varlume_table(10000);
-vector<double> tanh_table(200000);
 void ComputeColorTables()
 {
     hue = COLORHUE % 360;
@@ -34,6 +18,7 @@ void ComputeColorTables()
 
 void FreeColorTables()
 {
+    y = 0.5;
     varhue_table.clear();
     varlume_table.clear();
     tanh_table.clear();
@@ -52,11 +37,11 @@ sf::Color color_scheme(double& value, double& scale)
     //variable hue
 
     amplitude = tanh_table[(int)((SLOPE * value / scale)*1000)+100000];
-    y = 0.5;
+
     hue = HUEMEAN + amplitude *HUEAMP;
     if (hue < 0) hue += 360;
     if (hue >= 360) hue -= 360;
-    rgb = varhue_table.at((int)(hue * 100));
+    rgb = varhue_table[((int)(hue * 100))];
     //rgb = HSLToRGB(hue, 0.8, 0.5);
 
     return rgb;

@@ -24,6 +24,7 @@ public:
 		Solver();
 		bool init(int width, int height, double dt, double cv, Memory* mem);
 		void initialConditions(Memory* mem, StateModifier* sm);
-		void simStep(Memory* mem, StateModifier* sm);
+		void simStep(Memory* mem, StateModifier* sm, int i, int j);
+		void update(Memory* mem);
 };
 

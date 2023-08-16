@@ -39,3 +39,5 @@ sf::RenderWindow window;	// main window
 //Functions
 static void exit();
 static void mainLoop();
+
+void taskg();

@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "main.h"
 
+double scale = 1;
+
 int main(int argc, char* argv[])
 {
 	bool result = true;
@@ -62,16 +64,25 @@ void mainLoop()
 				break;
 			}
 		}
-		solver.simStep(mem, &smod);
-		
-		double scale = 1;
+		scale = 1;
+
+
+		//thread g(taskg);
+		//SetThreadPriority(g.native_handle(), 6);
+
 		for (int i = 1; i < solver.m_Nx; i++)
 		{
 			for (int j = 1; j < solver.m_Ny; j++)
 			{
+				solver.simStep(mem, &smod, i, j);
 				graph.m_image_wnd.setPixel(i, j, color_scheme(mem->u[i][j], scale));
 			}
 		}
+
+		
+		//g.join();
+
+		solver.update(mem);
 
 		graph.updateTexture(Graphics::TextureWindow);
 		//graph.updateTexture(Graphics::TextureWave);
@@ -89,6 +100,20 @@ void mainLoop()
 		window.display();
 	}
 	mem->destroyInstance();
+}
+
+
+void taskg()
+{
+	//for (int i = solver.m_Nx /2 + 1; i < solver.m_Nx; i++)
+	for (int i = 1; i < solver.m_Nx; i++)
+	{
+		for (int j = 1; j < solver.m_Ny; j++)
+		{
+			solver.simStep(mem, &smod, i, j);
+			//graph.m_image_wnd.setPixel(i, j, color_scheme(mem->u[i][j], scale));
+		}
+	}
 }
 
 

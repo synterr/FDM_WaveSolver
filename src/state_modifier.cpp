@@ -7,7 +7,7 @@ constexpr auto TWO_PI = 3.14159265358979f * 2;
 static double a = 0.4;	//x-axis
 static double b = 0.2;		//y-axis
 //focal source position in ellipse
-double x0 = ((0.5 - (sqrt(a * a - b * b))));
+static double x0 = ((0.5 - (sqrt(a * a - b * b))));
 
 //circle parameters
 static double c = 0.08;	//x-axis
@@ -15,6 +15,8 @@ static double d = 0.08;	//y-axis
 
 static double timer = 0;
 static double wave_count = 0;
+
+static double ret = 0;
 
 StateModifier::StateModifier()
 {
@@ -72,15 +74,13 @@ double StateModifier::InitialState(double& xi, double& yi)
 }
 
 
-double StateModifier::DriveForce(double& xi, double& yi, double t)
+double StateModifier::DriveForce(double& xi, double& yi, double& t)
 {
 	// In theory, single point drive functions should follow derivatives of functions shapes to recreate
-	double ret;
 
 	/* Flat zero */
 	ret = 0;
 	/* Timed One period sin middle point Driver */
-
 
 	if (yi == m_yMid && xi == (int)floor(x0 * m_Nx) * m_dx)
 	{
@@ -94,9 +94,10 @@ double StateModifier::DriveForce(double& xi, double& yi, double t)
 
 		if (wave_count < 5 && (t - timer) < TWO_PI / 30 && (t - timer) >= 0)
 		{
-			ret = 120 * cos((t - timer) * 15);
+			ret = 120 * cos((t - timer) * 15) * m_dt;
 		}
 
 	}
+
 	return ret;
 }
