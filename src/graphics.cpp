@@ -57,7 +57,7 @@ bool Graphics::loadResources()
 	}
 
 	// wave image texture and sprite
-	m_image_wav.create(m_window_size.x, m_window_size.y, sf::Color(10, 10, 10, 250));
+	m_image_wav.create(m_window_size.x, m_window_size.y, sf::Color(10, 10, 10, 255));
 
 	if (m_texture_wav.create(m_window_size.x, m_window_size.y))
 	{
@@ -122,4 +122,22 @@ void Graphics::drawText(std::string text, sf::Vector2u pos)
 	sftext.setCharacterSize(16); // in pixels, not points!
 	sftext.setFillColor(sf::Color(200, 200, 200, 120));
 	m_window->draw(sftext);
+}
+
+void Graphics::genMediumTexture(Memory* mem)
+{
+	//Prepare medium overlay alpha texture
+	for (int i = 1; i < g_Nx; i++)
+	{
+		for (int j = 1; j < g_Ny; j++)
+		{
+			if (mem->q[i][j] >= 0.01)
+				m_image_med.setPixel(i, j, sf::Color(24, 24, 24, (1 - mem->q[i][j]) * 128));
+			else
+				m_image_med.setPixel(i, j, sf::Color(0, 0, 0, 210));
+			// brighten boundary if medium difference > 0.1
+			if (abs((mem->q[i + 1][j] + mem->q[i - 1][j] + mem->q[i][j + 1] + mem->q[i][j - 1]) / 4 - mem->q[i][j]) > 0.05)
+				m_image_med.setPixel(i, j, sf::Color(200, 200, 200, (1 - mem->q[i][j]) * 128));
+		}
+	}
 }

@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include <string>
 #include "log.h"
+#include "memory.h"
 
 class Graphics
 {
@@ -39,5 +40,6 @@ public:
 	bool loadResources();
 	void updateTexture(TextureType texture_type);
 	void drawText(std::string text, sf::Vector2u pos);
+	void genMediumTexture(Memory* mem);
 };
 

@@ -14,12 +14,12 @@ Memory* Memory::getInstance(Log* logr)
 		m_instanceMemory;
 }
 void Memory::destroyInstance() {
-	m_logr->Info("Freeing memory instance... ");
 	delete m_instanceMemory;
 	m_instanceMemory = nullptr;
 }
 Memory::~Memory()
 {
+	m_logr->Info("Freeing memory instance... ");
 	x.clear();
 	y.clear();
 

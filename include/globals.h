@@ -13,3 +13,5 @@ int g_Ny;				// Height of simulation area
 
 double g_xMid;			// midpoint in normalized coords
 double g_yMid;			// midpoint in normalized coords
+
+double g_hueshift;

@@ -46,7 +46,7 @@ namespace Solver
 						- u_n[i][j] * elasticity				 //"elasticity" term enforcing oscillations
 						- (u_n[i][j] - u_nm[i][j]) * damping;			 //damping
 				}
-				graph->m_image_wnd.setPixel(i, j, color_scheme(mem->u[i][j], scale));
+				graph->m_image_wav.setPixel(i, j, Colors::color_scheme(mem->u[i][j], scale));
 			}
 		}
 		m_tim += g_dt;
