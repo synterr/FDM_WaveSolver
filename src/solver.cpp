@@ -8,9 +8,6 @@ namespace Solver
 	double delta;
 	int iplus, iminus, jplus, jminus;
 
-	double elasticity;
-	double damping;
-
 	void simStep(Memory* mem, Graphics* graph, double scale)
 	{
 
@@ -43,8 +40,8 @@ namespace Solver
 							+ 0.5 * (q[i][j] + q[i][jminus]) * (u_n[i][jminus] - u_n[i][j]));
 
 					u[i][j] = -u_nm[i][j] + 2 * u_n[i][j] + g_C2 * delta + StateMod::DriveForce(x[i], y[j], m_tim)
-						- u_n[i][j] * elasticity				 //"elasticity" term enforcing oscillations
-						- (u_n[i][j] - u_nm[i][j]) * damping;			 //damping
+						- u_n[i][j] * g_elasticity				 //"elasticity" term enforcing oscillations
+						- (u_n[i][j] - u_nm[i][j]) * g_damping;			 //damping
 				}
 				graph->m_image_wav.setPixel(i, j, Colors::color_scheme(mem->u[i][j], scale));
 			}
@@ -100,8 +97,8 @@ namespace Solver
 		if (g_C >= 1)
 			mem->m_logr->Warn("Courant constatnt C > 1 may cause simulation instability!");
 
-		elasticity = 0.0005 * g_dt;
-		damping = 0.01 * g_dt;
+		g_elasticity = 0.0005 * g_dt;
+		g_damping = 0.01 * g_dt;
 
 		return true;
 	}

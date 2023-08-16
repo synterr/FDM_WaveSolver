@@ -14,6 +14,9 @@ extern int g_Ny;				// Height of simulation area
 extern double g_xMid;			// midpoint in normalized coords
 extern double g_yMid;			// midpoint in normalized coords
 
+extern double g_elasticity;
+extern double g_damping;
+
 namespace Solver
 {
 

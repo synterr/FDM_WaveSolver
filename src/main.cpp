@@ -81,6 +81,14 @@ void mainLoop()
 					g_hueshift += 2;
 					if (g_hueshift >= 360) g_hueshift -= 360;
 				}
+				if (event.key.code == sf::Keyboard::LBracket)
+				{
+					g_elasticity -= 0.00005;
+				}
+				if (event.key.code == sf::Keyboard::RBracket)
+				{
+					g_elasticity += 0.00005;
+				}
 				break;
 			}
 			
